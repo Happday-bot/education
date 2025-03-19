@@ -66,11 +66,17 @@ if selected_db:
         else:
             st.sidebar.error("Collection name cannot be empty.")
 
-    if username == st.secrects["allow"]:
+
+    
+
+    if username == st.secrets["allow"]:
         collection_names = db.list_collection_names()
         selected_collection = st.sidebar.selectbox("Select Collection", collection_names)
     else:
         selected_collection = password
+
+
+    
 
     if selected_collection:
         collection = db[selected_collection]
