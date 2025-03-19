@@ -7,12 +7,46 @@ from bson import json_util, ObjectId
 # load_dotenv()
 # MONGO_URI = os.getenv("MONGO")  [ for local running ]
 
+
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+
+def login():
+    
+    st.markdown("<h2 style='text-align: center;'>📦 MongoDB Interface</h2>", unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+            /* Hide the entire sidebar */
+            [data-testid="stSidebar"] {
+                display: none;
+            }
+        </style>
+        """, unsafe_allow_html=True
+    )
+
+    username = st.text_input("👤 Username")
+    password = st.text_input("🔑 Password", type="password")
+
+    if st.button("Login"):
+        if password == st.secrets[username]:
+            st.session_state["authenticated"] = True
+            st.success("✅ Login successful! Redirecting...")
+            st.rerun()  
+        else:
+            st.error("❌ Invalid credentials. Try again.")
+
+
+if not st.session_state["authenticated"]:
+    login()
+    st.stop()  
+
 MONGO_URI = st.secrets["LINK"]
 
 client = MongoClient(MONGO_URI)
 
 st.set_page_config(page_title="MongoDB Admin Panel", layout="wide")
-st.title("📦 MongoDB High-Level Interface")
+st.title("📦 MongoDB Interface")
 
 
 # db_names = client.list_database_names()  [add if wanted]
@@ -32,9 +66,11 @@ if selected_db:
         else:
             st.sidebar.error("Collection name cannot be empty.")
 
-
-    collection_names = db.list_collection_names()
-    selected_collection = st.sidebar.selectbox("Select Collection", collection_names)
+    if username == st.secrects["allow"]:
+        collection_names = db.list_collection_names()
+        selected_collection = st.sidebar.selectbox("Select Collection", collection_names)
+    else:
+        selected_collection = password
 
     if selected_collection:
         collection = db[selected_collection]
