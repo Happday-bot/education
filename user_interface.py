@@ -10,7 +10,10 @@ from bson import json_util, ObjectId
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
+    st.set_page_config(page_title="MongoDB Admin Panel")
 
+
+st.title("📦 MongoDB Interface")
 
 def login():
     
@@ -41,12 +44,13 @@ if not st.session_state["authenticated"]:
     login()
     st.stop()  
 
+
+st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
+st.title("📦 MongoDB Interface")
+
 MONGO_URI = st.secrets["LINK"]
 
 client = MongoClient(MONGO_URI)
-
-st.set_page_config(page_title="MongoDB Admin Panel", layout="wide")
-st.title("📦 MongoDB Interface")
 
 
 # db_names = client.list_database_names()  [add if wanted]
