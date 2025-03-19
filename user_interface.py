@@ -17,7 +17,6 @@ st.title("📦 MongoDB Interface")
 
 def login():
     
-    st.markdown("<h2 style='text-align: center;'>📦 MongoDB Interface</h2>", unsafe_allow_html=True)
     st.markdown("""
         <style>
             /* Hide the entire sidebar */
