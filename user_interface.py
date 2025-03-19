@@ -35,6 +35,7 @@ def login():
         if password == st.secrets[username]:
             st.session_state["authenticated"] = True
             st.success("✅ Login successful! Redirecting...")
+            st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
             st.rerun()  
         else:
             st.error("❌ Invalid credentials. Try again.")
@@ -44,9 +45,6 @@ if not st.session_state["authenticated"]:
     login()
     st.stop()  
 
-
-st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
-st.title("📦 MongoDB Interface")
 
 MONGO_URI = st.secrets["LINK"]
 
