@@ -9,6 +9,8 @@ from bson import json_util, ObjectId
 st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
 st.title("📦 MongoDB Interface")
 
+username = ""
+password = ""
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
