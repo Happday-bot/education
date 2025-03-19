@@ -10,10 +10,10 @@ from bson import json_util, ObjectId
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
-    st.set_page_config(page_title="MongoDB Admin Panel")
 
 
 st.title("📦 MongoDB Interface")
+st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
 
 def login():
     
@@ -34,7 +34,6 @@ def login():
         if password == st.secrets[username]:
             st.session_state["authenticated"] = True
             st.success("✅ Login successful! Redirecting...")
-            st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
             st.rerun()  
         else:
             st.error("❌ Invalid credentials. Try again.")
