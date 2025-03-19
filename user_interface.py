@@ -1,27 +1,26 @@
 import streamlit as st
-import os
 import json
 import pandas as pd
-from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson import json_util, ObjectId
 
-# Load environment variables
-load_dotenv()
-MONGO_URI = os.getenv("MONGO")
+# load_dotenv()
+# MONGO_URI = os.getenv("MONGO")
 
-# Connect to MongoDB
+MONGO_URI = st.secrets["LINK"]
+
 client = MongoClient(MONGO_URI)
 
 st.set_page_config(page_title="MongoDB Admin Panel", layout="wide")
 st.title("📦 MongoDB High-Level Interface")
 
-# **1️⃣ Choose Database**
-# db_names = client.list_database_names()
-selected_db = os.getenv("NAME")
-# selected_db = st.sidebar.selectbox("Select Database", db_names)
+"""
+db_names = client.list_database_names()
+selected_db = st.sidebar.selectbox("Select Database", db_names)
+"""
+# selected_db = os.getenv("NAME")
+selected_db = st.secrets["LINK2"]
 
-# **🆕 Create New Collection**
 if selected_db:
     db = client[selected_db]
 
@@ -33,17 +32,15 @@ if selected_db:
         else:
             st.sidebar.error("Collection name cannot be empty.")
 
-    # **2️⃣ Choose Collection**
+
     collection_names = db.list_collection_names()
     selected_collection = st.sidebar.selectbox("Select Collection", collection_names)
 
     if selected_collection:
         collection = db[selected_collection]
 
-        # **3️⃣ Operations**
         operation = st.sidebar.radio("Select Operation", ["Find", "Insert", "Update", "Custom Query"])
 
-        # **🔍 FIND (READ) Documents**
         if operation == "Find":
             st.subheader("🔍 Find Documents")
             query = st.text_area("Enter Query (JSON format)", "{}")
@@ -52,12 +49,11 @@ if selected_db:
                 documents = list(collection.find(query_dict))
                 df = pd.DataFrame(documents)
                 if len(df) > 0:
-                    df["_id"] = df["_id"].astype(str)  # Convert ObjectId to string
+                    df["_id"] = df["_id"].astype(str) 
                 st.dataframe(df)
             except json.JSONDecodeError:
                 st.error("Invalid JSON format")
 
-        # **📝 INSERT Document**
         elif operation == "Insert":
             st.subheader("📝 Insert Document")
             doc = st.text_area("Enter JSON Document")
@@ -74,7 +70,6 @@ if selected_db:
                 except json.JSONDecodeError:
                     st.error("Invalid JSON format")
 
-        # **✏️ UPDATE Document**
         elif operation == "Update":
             st.subheader("✏️ Update Document")
             filter_query = st.text_area("Enter Filter Query (JSON format)")
@@ -88,7 +83,6 @@ if selected_db:
                 except json.JSONDecodeError:
                     st.error("Invalid JSON format")
 
-        # **🛠 CUSTOM Query**
         elif operation == "Custom Query":
             st.subheader("🛠 Run a Custom MongoDB Query")
             query_code = st.text_area("Enter Python Code (using `collection`)")
