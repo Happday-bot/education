@@ -6,14 +6,12 @@ from bson import json_util, ObjectId
 
 # load_dotenv()
 # MONGO_URI = os.getenv("MONGO")  [ for local running ]
+st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
+st.title("📦 MongoDB Interface")
 
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
-
-
-st.title("📦 MongoDB Interface")
-st.set_page_config(page_title="MongoDB Admin Panel", layout = "wide")
 
 def login():
     
