@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from bson import json_util, ObjectId
 
 # load_dotenv()
-# MONGO_URI = os.getenv("MONGO")
+# MONGO_URI = os.getenv("MONGO")  [ for local running ]
 
 MONGO_URI = st.secrets["LINK"]
 
@@ -14,10 +14,10 @@ client = MongoClient(MONGO_URI)
 st.set_page_config(page_title="MongoDB Admin Panel", layout="wide")
 st.title("📦 MongoDB High-Level Interface")
 
-"""
-db_names = client.list_database_names()
-selected_db = st.sidebar.selectbox("Select Database", db_names)
-"""
+
+# db_names = client.list_database_names()  [add if wanted]
+# selected_db = st.sidebar.selectbox("Select Database", db_names) [add if wanted]
+
 # selected_db = os.getenv("NAME")
 selected_db = st.secrets["LINK2"]
 
